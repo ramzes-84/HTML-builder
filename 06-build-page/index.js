@@ -1,5 +1,6 @@
 const path = require('path');
 const fsPromises = require('fs/promises');
+const fs = require('fs');
 
 const stylesPath = path.join(__dirname, 'styles');
 const targetProjPath = path.join(__dirname, 'project-dist');
@@ -57,11 +58,12 @@ async function composeCSS() {
   const allFiles = filesList.filter((file) => (path.extname(file.name) === '.css') && (file.isFile()));
   const onlyCSSFiles = allFiles.map((file) => file.name);
 
+  await fsPromises.mkdir(targetProjPath, {recursive: true});
+
   for (let item of onlyCSSFiles) {
     const partOfCSS = await fsPromises.readFile(path.join(stylesPath, item), {encoding: 'utf8'});
-    result += partOfCSS;
+    fs.appendFile(targetCSSPath, partOfCSS, (error) => {
+      if (error) return console.error(error.message);
+    });
   }
-
-  await fsPromises.mkdir(targetProjPath, {recursive: true});
-  await fsPromises.writeFile(targetCSSPath, result);
 }
