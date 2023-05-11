@@ -5,7 +5,7 @@ const fsPromises = require('fs/promises');
 const stylesPath = path.join(__dirname, 'styles');
 const targetCSSPath = path.join(__dirname, 'project-dist', 'bundle.css');
 
-// fs.writeFile(targetCSSPath, '', (err) => {if (err) throw err;});
+fs.writeFile(targetCSSPath, '', (err) => {if (err) throw err;});
 
 composeCSS();
 
