@@ -53,12 +53,12 @@ async function composeHTML() {
 }
 
 async function composeCSS() {
-  let result;
   const filesList = await fsPromises.readdir(stylesPath, {withFileTypes: true});
   const allFiles = filesList.filter((file) => (path.extname(file.name) === '.css') && (file.isFile()));
   const onlyCSSFiles = allFiles.map((file) => file.name);
 
   await fsPromises.mkdir(targetProjPath, {recursive: true});
+  await fsPromises.writeFile(targetCSSPath, '', (err) => {if (err) throw err;});
 
   for (let item of onlyCSSFiles) {
     const partOfCSS = await fsPromises.readFile(path.join(stylesPath, item), {encoding: 'utf8'});
