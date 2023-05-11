@@ -5,6 +5,8 @@ const fsPromises = require('fs/promises');
 const stylesPath = path.join(__dirname, 'styles');
 const targetCSSPath = path.join(__dirname, 'project-dist', 'bundle.css');
 
+// fs.writeFile(targetCSSPath, '', (err) => {if (err) throw err;});
+
 composeCSS();
 
 async function composeCSS() {
@@ -15,8 +17,8 @@ async function composeCSS() {
 
   for (let item of onlyCSSFiles) {
     const partOfCSS = await fsPromises.readFile(path.join(stylesPath, item), {encoding: 'utf8'})
-    result += partOfCSS;
+    fs.appendFile(targetCSSPath, partOfCSS, (error) => {
+      if (error) return console.error(error.message);
+    });
   }
-
-  await fsPromises.writeFile(targetCSSPath, result)
 }
